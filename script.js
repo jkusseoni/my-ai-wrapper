@@ -2,7 +2,7 @@ async function askAI() {
     const userInput = document.getElementById('userInput').value;
     const responseText = document.getElementById('response');
     
-    // अपनी API Key यहाँ डालें
+    // अपनी API Key यहाँ "" के बीच में पेस्ट करें
     const API_KEY = "AIzaSyCyE9fN9A5VQ8jN6DBTKuTTk0rwhl1MGzw"; 
 
     if (!userInput) {
@@ -22,11 +22,18 @@ async function askAI() {
         });
 
         const data = await response.json();
+
+        // अगर API की (Key) गलत है, तो यहाँ पता चल जाएगा
+        if (data.error) {
+            responseText.innerText = "API Error: " + data.error.message;
+            return;
+        }
+
         const aiReply = data.candidates.content.parts.text;
         responseText.innerText = aiReply;
 
     } catch (error) {
-        responseText.innerText = "माफ़ कीजिये, कुछ गड़बड़ हो गई।";
+        responseText.innerText = "नेटवर्क या कोड में समस्या है।";
         console.error(error);
     }
 }
